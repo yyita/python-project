@@ -759,6 +759,14 @@ class TextEditor(tk.Toplevel):
         def textbox__when_buttondrag_left(event):
             textbox.after(0, refresh_selection_length)
 
+        def textbox__when_keypress_home(event):
+            textbox.mark_set("insert", "insert linestart")
+            textbox.see("insert")
+
+        def textbox__when_keypress_end(event):
+            textbox.mark_set("insert", "insert lineend")
+            textbox.see("insert")
+
         textbox.bind("<FocusIn>", textbox__when_focusin)
         textbox.bind("<FocusOut>", textbox__when_focusout)
         textbox.bind("<<Modified>>", textbox__when_modified)
@@ -767,6 +775,8 @@ class TextEditor(tk.Toplevel):
         textbox.bind("<KeyPress-Left>", textbox__when_keypress_left)
         textbox.bind("<KeyPress-Right>", textbox__when_keypress_right)
         textbox.bind("<KeyPress-BackSpace>", textbox__when_keypress_backspace)
+        textbox.bind("<KeyPress-Home>", textbox__when_keypress_home)
+        textbox.bind("<KeyPress-End>", textbox__when_keypress_end)
         textbox.bind("<ButtonPress-1>", textbox__when_buttonpress_left)
         textbox.bind("<ButtonRelease-1>", textbox__when_buttonrelease_left)
         textbox.bind("<B1-Motion>", textbox__when_buttondrag_left)
