@@ -1,0 +1,6 @@
+# Project
+build/
+*.egg-info/
+
+# Python
+__pycache__/
