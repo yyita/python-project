@@ -196,6 +196,10 @@ class Textbox(_tk.Text):
         super().__init__(*args, **kwargs)
         self.bind("<KeyPress-Tab>", lambda event: (self.write("    "), "break")[1])
 
+    def set(self, chars, *args):
+        self.delete("1.0", _tk.END)
+        self.write(chars, *args)
+
     def write(self, chars, *args):
         self.tk.call((self._w, 'insert', _tk.INSERT, chars) + args)
 

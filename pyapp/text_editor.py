@@ -164,7 +164,7 @@ class FindreplaceDialog(tk.Toplevel):
                 position_search_tail = None
 
             if position_head := textbox.search(
-                text, f"insert +{offset}c", position_search_tail, forwards=True,
+                text, tk.INSERT, position_search_tail, forwards=True,
                 nocase=var_ignorecase.get()
             ):
                 row_head, column_head = map(int, position_head.split("."))
@@ -307,10 +307,11 @@ class FindreplaceDialog(tk.Toplevel):
         textbox_find = self.textbox_find
         textbox_replace = self.textbox_replace
 
-        # 存在选区时，将选区文本自动填入“查找”输入框
+        # 存在选区时，自动设置“查找”输入框的内容为选区文本
         if position_selection := textbox.tag_ranges("sel"):
             position_head, position_tail = position_selection
-            textbox_find.write(textbox.get(position_head, position_tail))
+            selection = textbox.get(position_head, position_tail)
+            textbox_find.set(selection)
 
         # 仅在窗口未显示时进行居中+显示
         if not self.winfo_viewable():
