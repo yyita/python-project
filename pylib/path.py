@@ -3,7 +3,7 @@ import stat
 import pathlib
 import datetime
 import typing
-class CategroyID:
+class CategoryID:
     all = 0
     file = 1
     folder = 2
@@ -11,7 +11,7 @@ def search(
     #1 通用匹配项
     topFolder = os.getcwd(),
     deepSearch = False,
-    category = CategroyID.all,
+    category = CategoryID.all,
     nameMatcher: typing.Callable[[str], bool] = None,
     excludeReadonly = True,
     excludeHidden = True,
@@ -62,13 +62,13 @@ def search(
                 return True
         return False
     for parentFolder, folderNames, fileNames in os.walk(topFolder):
-        if category == CategroyID.all or category == CategroyID.file:
+        if category == CategoryID.all or category == CategoryID.file:
             for fileName in fileNames:
                 if nameMatcher and not nameMatcher(fileName):
                     continue
                 filePath = os.path.join(parentFolder, fileName)
                 if need_gettingStatus:
-                    fileStatus = stat(filePath, follow_symlinks=False)
+                    fileStatus = os.stat(filePath, follow_symlinks=False)
                     if sizeMinimum and fileStatus.st_size < sizeMinimum:
                         continue
                     if sizeMaximum and sizeMaximum < fileStatus.st_size:
@@ -84,13 +84,13 @@ def search(
                     if not dataMatcher(fileData):
                         continue
                 yield filePath
-        if category == CategroyID.all or category == CategroyID.folder:
+        if category == CategoryID.all or category == CategoryID.folder:
             for folderName in folderNames:
                 if nameMatcher and not nameMatcher(folderName):
                     continue
                 folderPath = os.path.join(parentFolder, folderName)
                 if need_gettingStatus:
-                    folderStatus = stat(folderPath, follow_symlinks=False)
+                    folderStatus = os.stat(folderPath, follow_symlinks=False)
                     if isInvalidStatus_for_generic(folderStatus):
                         continue
                 yield folderPath
